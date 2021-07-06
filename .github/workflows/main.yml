@@ -1,0 +1,23 @@
+name: Freshtomato
+on:
+  push:
+    branches: [ arm-master ]
+  pull_request:
+    branches: [ arm-master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install deps
+        run: sudo apt-get install -y autoconf automake autopoint autogen libtool gcc g++ curl cmake gettext  gperf intltool
+      - name: Build
+        run: make ac68z
+        working-directory: release/src-rt-6.x.4708
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: images
+          path: release/src-rt-6.x.4708/image/*AC68*
